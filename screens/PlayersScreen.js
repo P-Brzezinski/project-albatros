@@ -13,6 +13,7 @@ const PlayersScreen = () => {
       data={PLAYERS_DUMMY_DATA}
       keyExtractor={(item) => item.id}
       renderItem={renderPlayerItem}
+      numColumns={2}
     />
   );
 };

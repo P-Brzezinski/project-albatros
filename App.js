@@ -1,9 +1,11 @@
-import { StyleSheet } from "react-native";
+import { StatusBar } from "expo-status-bar";
 import PlayersScreen from "./screens/PlayersScreen";
 
 export default function App() {
-  return <PlayersScreen />;
+  return (
+    <>
+      <StatusBar style="dark" />
+        <PlayersScreen />
+    </>
+  );
 }
-
-const styles = StyleSheet.create({
-});
