@@ -1,11 +1,15 @@
 import { FlatList } from "react-native";
-import PlayerGridTile from "../components/PlayerGridTile";
+import PlayerGridTile from "../components/player/PlayerGridTile";
 
 import { PLAYERS_DUMMY_DATA } from "../data/data"
 
-const PlayersScreen = () => {
+const PlayersScreen = ({navigation}) => {
+
   const renderPlayerItem = (playerData) => {
-    return <PlayerGridTile name={playerData.item.name} />;
+    const pressPlayerItem = () => {
+      navigation.navigate("PlayerDetails", { player: playerData.item });
+    }
+    return <PlayerGridTile name={playerData.item.name} onPress={pressPlayerItem} />;
   };
 
   return (
