@@ -1,14 +1,16 @@
 import { Pressable, StyleSheet, Text, View, Platform } from "react-native"
+import { Colors } from "../../constants/colors";
 
-const PlayerGridTile = ({name}) => {
+const PlayerGridTile = ({name, onPress}) => {
     return (
       <View style={styles.gridItem}>
         <Pressable
-          android_ripple={{ color: "ccc" }}
+          android_ripple={{ color: Colors.primaryRipple }}
           style={({ pressed }) => [
             styles.button,
             pressed ? styles.buttonPressed : null,
           ]}
+          onPress={onPress}
         >
           <View style={styles.innerContainer}>
             <Text style={styles.title}>{name}</Text>
@@ -27,8 +29,8 @@ const styles = StyleSheet.create({
     height: 150,
     borderRadius: 8,
     elevation: 4,
-    backgroundColor: "white", //to make shadowColor visible on iOS
-    shadowColor: "black",
+    backgroundColor: Colors.primaryWhite, //to make shadowColor visible on iOS
+    shadowColor: Colors.primaryBlack,
     shadowOpacity: 0.25,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 8,
@@ -46,7 +48,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: 'lightblue'
+    backgroundColor: Colors.primaryLight
   },
   title: {
     fontWeight: "bold",
