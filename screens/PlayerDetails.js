@@ -4,7 +4,7 @@ import { useRoute } from "@react-navigation/native";
 const PlayerDetails = ({route}) => {
   return (
     <View>
-      <Text>{route.params.player.name}</Text>
+      <Text>{route.params && route.params.player.name}</Text>
     </View>
   );
 };
