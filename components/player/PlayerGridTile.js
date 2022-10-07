@@ -1,7 +1,16 @@
+import { useState } from "react";
 import { Pressable, StyleSheet, Text, View, Platform } from "react-native"
 import { GlobalStyles } from "../../constants/styles";
+import PickPlayerButton from "../UI/PickPlayerButton";
 
-const PlayerGridTile = ({name, onPress}) => {
+const PlayerGridTile = ({player, onPress, onPick}) => {
+  const [picked, setPicked] = useState(false);
+
+  const pickHandler = () => {
+    setPicked(!picked);
+    onPick(player.id);
+  }
+
     return (
       <View style={styles.gridItem}>
         <Pressable
@@ -13,7 +22,15 @@ const PlayerGridTile = ({name, onPress}) => {
           onPress={onPress}
         >
           <View style={styles.innerContainer}>
-            <Text style={styles.title}>{name}</Text>
+            <Text style={styles.title}>{player.name}</Text>
+          </View>
+          <View style={styles.innerButtonContainer}>
+            <PickPlayerButton
+              onPress={pickHandler}
+              icon={picked ? "checkmark-circle-outline" : null}
+            >
+              {picked ? "Picked up!" : "Pick up"}
+            </PickPlayerButton>
           </View>
         </Pressable>
       </View>
@@ -45,10 +62,14 @@ const styles = StyleSheet.create({
   innerContainer: {
     flex: 1,
     padding: 16,
-    borderRadius: 8,
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: GlobalStyles.colors.primaryLight,
+  },
+  innerButtonContainer: {
+    backgroundColor: GlobalStyles.colors.primaryLight
   },
   title: {
     fontWeight: "bold",
