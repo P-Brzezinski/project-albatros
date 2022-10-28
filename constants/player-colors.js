@@ -1,0 +1,1 @@
+export const PLAYER_COLORS = ["green", "red", "blue", "yellow", "brown", "pink"];
