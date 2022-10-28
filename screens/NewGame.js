@@ -1,15 +1,12 @@
-import { useContext } from "react";
-import { Text, View } from "react-native"
+import { View } from "react-native"
+import PlayersQueue from "../components/Player/PlayersQueue";
 import Stopwatch from "../components/UI/Stopwatch";
-import { PickedPlayersContext } from "../store/picked-players-context";
 
 const NewGame = () => {
-  const ctx = useContext(PickedPlayersContext);
-
   return (
     <View>
       <Stopwatch />
-      <Text>Picked players ids: {ctx.pickedPlayersIds}</Text>
+      <PlayersQueue />
     </View>
   );
 };
