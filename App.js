@@ -12,6 +12,7 @@ import { GlobalStyles } from "./constants/styles";
 import IconButton from "./components/UI/IconButton";
 import AddPlayer from "./screens/AddPlayer";
 import PickedPlayersProvider from "./store/picked-players-context";
+import EndGame from "./screens/EndGame";
 
 const Stack = createNativeStackNavigator();
 const BottomTabs = createBottomTabNavigator();
@@ -75,6 +76,7 @@ export default function App() {
               options={{ headerShown: false }}
             />
             <Stack.Screen name="NewGame" component={NewGame} />
+            <Stack.Screen name="EndGame" component={EndGame} />
             <Stack.Screen name="PlayerDetails" component={PlayerDetails} />
             <Stack.Screen name="AddPlayer" component={AddPlayer} />
           </Stack.Navigator>

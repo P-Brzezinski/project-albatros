@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, useImperativeHandle } from "react";
 import { Text, View, StyleSheet, Pressable } from "react-native";
 import { GlobalStyles } from "../../constants/styles";
+import { padToTwo } from "../../util/TimeHelper";
 
-const padToTwo = (number) => (number <= 9 ? `0${number}` : number);
-
-const Stopwatch = () => {
+const Stopwatch = React.forwardRef((props, ref) => {
   const [timer, setTimer] = useState({ h: 0, min: 0, sec: 0 });
   const [start, setStart] = useState(true);
 
@@ -24,8 +23,21 @@ const Stopwatch = () => {
   }, [timer, start]);
 
   const handleStartStop = () => {
-    setStart(prevState => !prevState);
+    setStart((prevState) => !prevState);
   };
+
+  const getCurrentTimeAndHandleStartStop = () => {
+    if (start) {
+      handleStartStop();
+    }
+    return timer;
+  };
+
+  useImperativeHandle(ref, () => {
+    return {
+      getTime: getCurrentTimeAndHandleStartStop,
+    };
+  });
 
   return (
     <View style={styles.container}>
@@ -51,7 +63,7 @@ const Stopwatch = () => {
       </View>
     </View>
   );
-};
+});
 
 export default Stopwatch;
 
