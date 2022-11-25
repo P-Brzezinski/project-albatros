@@ -1,28 +1,48 @@
-import { useRef, useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
+import { View, StyleSheet, Alert, Text } from "react-native";
 import PlayersQueue from "../components/Player/PlayersQueue";
 import Button from "../components/UI/Button";
 import Stopwatch from "../components/UI/Stopwatch";
+import { GlobalStyles } from "../constants/styles";
+import { NewGameContext } from "../store/new-game-context";
 
 const NewGame = ({ navigation }) => {
-  const getGameTime = useRef();
+  const newGameCtx = useContext(NewGameContext);
+
+  const gameEnded = useMemo(() => {
+    return newGameCtx.gameEnded;
+  }, [newGameCtx]);
 
   const endGame = () => {
-    const timePlayed = getGameTime.current.getTime()
-    navigateToEndGameScreen(timePlayed);
+    newGameCtx.endGame();
   };
 
-  const navigateToEndGameScreen = (timePlayed) => {
-    navigation.navigate("EndGame", { gameTime: timePlayed });
+  // after score counted, go to EndGame screen
+  const navigateToEndGameScreen = () => {
+    navigation.navigate("EndGame");
   };
+
+  const confirmGameEnd = () => {
+    Alert.alert("End Game", "Are you sure?", [
+      {
+        text: "Cancel",
+        style: "cancel",
+      },
+      {
+        text: "OK",
+        onPress: endGame,
+      },
+    ]);
+  };
+
+  console.log(newGameCtx.timePlayed)
 
   return (
-    <View>
-      <Stopwatch ref={getGameTime}/>
+    <View style={styles.content}>
+      {gameEnded && <Text style={styles.gameOverHeader}>Game over!</Text>}
+      <Stopwatch />
       <PlayersQueue />
-      <View style={styles.endGameButtonContainer}>
-        <Button onPress={endGame}>End Game</Button>
-      </View>
+      {!gameEnded && <Button onPress={confirmGameEnd}>End Game</Button>}
     </View>
   );
 };
@@ -30,8 +50,13 @@ const NewGame = ({ navigation }) => {
 export default NewGame;
 
 const styles = StyleSheet.create({
-  endGameButtonContainer: {
-    justifyContent: "center",
+  content: {
     alignItems: "center",
+  },
+  gameOverHeader: {
+    fontSize: 24,
+    fontWeight: "900",
+    color: GlobalStyles.colors.primaryBlack,
+    marginTop: 16,
   },
 });

@@ -5,12 +5,11 @@ import { PLAYERS_DUMMY_DATA } from "../../data/data";
 import { PLAYER_COLORS } from "../../constants/player-colors";
 import { PickedPlayersContext } from "../../store/picked-players-context";
 import PlayerItem from "./PlayerItem";
+import ScoreTile from "../UI/ScoreTile";
 
 const PlayersQueue = () => {
   const ctx = useContext(PickedPlayersContext);
-  const players = PLAYERS_DUMMY_DATA.filter((player) =>
-    ctx.pickedPlayersIds.includes(player.id)
-  ).map((player, index) => {
+  const players = ctx.pickedPlayers.map((player, index) => {
     return { ...player, color: PLAYER_COLORS[index] };
   });
 
@@ -30,11 +29,10 @@ const PlayersQueue = () => {
       data={players}
       keyExtractor={(item) => item.id}
       renderItem={({ item, index }) => (
-        <PlayerItem
-          playerNumber={index}
-          playerName={item.name}
-          playerColor={item.color}
-        />
+        <View style={styles.playersQueue}>
+          <PlayerItem playerNumber={index} playerData={item} />
+          <ScoreTile player={item} />
+        </View>
       )}
     />
   );
@@ -53,5 +51,8 @@ const styles = StyleSheet.create({
   fallbackText: {
     fontSize: 16,
     color: GlobalStyles.colors.primaryMedium,
+  },
+  playersQueue: {
+    flexDirection: "row",
   },
 });

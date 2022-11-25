@@ -13,8 +13,8 @@ const PlayersScreen = ({navigation}) => {
     const pressPlayerItem = () => {
       navigation.navigate("PlayerDetails", { player: playerData.item });
     }
-    const pickPlayer = (id) => {
-      ctx.pickPlayer(id)
+    const pickPlayer = (player) => {
+      ctx.pickPlayer(player)
     }
     return (
       <PlayerGridTile player={playerData.item} onPress={pressPlayerItem} onPick={pickPlayer} />
