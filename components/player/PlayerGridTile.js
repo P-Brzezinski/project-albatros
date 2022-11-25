@@ -8,7 +8,7 @@ const PlayerGridTile = ({player, onPress, onPick}) => {
 
   const pickHandler = () => {
     setPicked(!picked);
-    onPick(player.id);
+    onPick(player);
   }
 
     return (

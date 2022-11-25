@@ -1,13 +1,35 @@
-import React, { useEffect, useState, useImperativeHandle } from "react";
+import React, {
+  useEffect,
+  useState,
+  useImperativeHandle,
+  useContext,
+} from "react";
 import { Text, View, StyleSheet, Pressable } from "react-native";
 import { GlobalStyles } from "../../constants/styles";
+import { NewGameContext } from "../../store/new-game-context";
 import { padToTwo } from "../../util/TimeHelper";
 
-const Stopwatch = React.forwardRef((props, ref) => {
+const Stopwatch = React.forwardRef(({ showStartStop }, ref) => {
   const [timer, setTimer] = useState({ h: 0, min: 0, sec: 0 });
   const [start, setStart] = useState(true);
+  const newGameCtx = useContext(NewGameContext);
+
+  const handleStartStop = () => {
+    setStart((prevState) => !prevState);
+  };
+
+  const noticeCurrentTimeAndHandleStartStop = () => {
+    if (start) {
+      handleStartStop();
+    }
+    newGameCtx.noticeTime(timer);
+  };
 
   useEffect(() => {
+    if (newGameCtx.gameEnded) {
+      noticeCurrentTimeAndHandleStartStop();
+    }
+
     if (start) {
       const interval = setInterval(() => {
         if (timer.sec !== 59) {
@@ -22,23 +44,6 @@ const Stopwatch = React.forwardRef((props, ref) => {
     }
   }, [timer, start]);
 
-  const handleStartStop = () => {
-    setStart((prevState) => !prevState);
-  };
-
-  const getCurrentTimeAndHandleStartStop = () => {
-    if (start) {
-      handleStartStop();
-    }
-    return timer;
-  };
-
-  useImperativeHandle(ref, () => {
-    return {
-      getTime: getCurrentTimeAndHandleStartStop,
-    };
-  });
-
   return (
     <View style={styles.container}>
       <View style={styles.timer}>
@@ -46,21 +51,22 @@ const Stopwatch = React.forwardRef((props, ref) => {
         <Text style={styles.digits}>{padToTwo(timer.min) + " : "}</Text>
         <Text style={styles.digits}>{padToTwo(timer.sec)}</Text>
       </View>
-
-      <View style={styles.buttonParent}>
-        <Pressable
-          android_ripple={{ color: GlobalStyles.colors.primaryRipple }}
-          style={({ pressed }) => [
-            styles.button,
-            pressed ? styles.buttonPressed : null,
-          ]}
-          onPress={handleStartStop}
-        >
-          <Text style={styles.buttonText}>
-            {start === true ? "Stop" : "Start"}
-          </Text>
-        </Pressable>
-      </View>
+      {showStartStop && (
+        <View style={styles.buttonParent}>
+          <Pressable
+            android_ripple={{ color: GlobalStyles.colors.primaryRipple }}
+            style={({ pressed }) => [
+              styles.button,
+              pressed ? styles.buttonPressed : null,
+            ]}
+            onPress={handleStartStop}
+          >
+            <Text style={styles.buttonText}>
+              {start === true ? "Stop" : "Start"}
+            </Text>
+          </Pressable>
+        </View>
+      )}
     </View>
   );
 });
@@ -89,7 +95,6 @@ const styles = StyleSheet.create({
   },
   buttonParent: {
     flexDirection: "row",
-    // justifyContent: "flex-start",
     marginTop: "12%",
   },
   button: {
