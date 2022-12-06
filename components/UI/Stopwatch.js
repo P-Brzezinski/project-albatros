@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Text, View, StyleSheet, Pressable } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
+import { Button } from "react-native-paper";
 import { GlobalStyles } from "../../constants/styles";
 import { NewGameContext } from "../../store/new-game-context";
 import { padToTwo } from "../../util/TimeHelper";
-import Button from "./Button";
 
 const Stopwatch = ({ stopTimer }) => {
   const [timer, setTimer] = useState({ h: 0, min: 0, sec: 0 });
@@ -49,13 +49,18 @@ const Stopwatch = ({ stopTimer }) => {
         <Text style={styles.digits}>{padToTwo(timer.min) + " : "}</Text>
         <Text style={styles.digits}>{padToTwo(timer.sec)}</Text>
       </View>
-      <View style={styles.buttonParent}>
         {!stopTimer && (
-          <Button onPress={handleStartStop}>
+          <Button
+            onPress={handleStartStop}
+            icon="av-timer"
+            mode="outlined"
+            textColor={GlobalStyles.colors.primaryMedium}
+            buttonColor={GlobalStyles.colors.primaryLight}
+            style={{borderColor: GlobalStyles.colors.primaryMedium, marginTop: 32}}
+          >
             {!pauseTimer === true ? "Stop" : "Start"}
           </Button>
         )}
-      </View>
     </View>
   );
 };
@@ -64,7 +69,7 @@ export default Stopwatch;
 
 const styles = StyleSheet.create({
   container: {
-    margin: 32,
+    marginTop: 32,
     alignItems: "center",
   },
   timer: {
@@ -81,28 +86,5 @@ const styles = StyleSheet.create({
   digits: {
     fontSize: 40,
     color: GlobalStyles.colors.primaryMedium,
-  },
-  buttonParent: {
-    flexDirection: "row",
-    marginTop: "12%",
-  },
-  button: {
-    backgroundColor: GlobalStyles.colors.primaryLight,
-    paddingTop: "5%",
-    paddingBottom: "5%",
-    paddingLeft: "5%",
-    paddingRight: "5%",
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: GlobalStyles.colors.primaryMedium,
-    height: 60,
-  },
-  buttonPressed: {
-    opacity: 0.5,
-  },
-  buttonText: {
-    color: GlobalStyles.colors.primaryMedium,
-    fontSize: 20,
-    alignSelf: "center",
-  },
+  }
 });

@@ -1,8 +1,8 @@
 import { useContext } from "react";
 import { FlatList, View, StyleSheet, Text } from "react-native";
+import { Button } from "react-native-paper";
 import PlayerGridTile from "../components/Player/PlayerGridTile";
-import Button from "../components/UI/Button";
-
+import { GlobalStyles } from "../constants/styles";
 import { PLAYERS_DUMMY_DATA } from "../data/data";
 import { NewGameContext } from "../store/new-game-context";
 import { PickedPlayersContext } from "../store/picked-players-context";
@@ -41,9 +41,15 @@ const PlayersScreen = ({ navigation }) => {
         numColumns={2}
       />
       <View style={styles.newGameButtonContainer}>
-        <Button onPress={newGame}>New Game</Button>
+        <Button
+          icon="sword-cross"
+          mode="contained"
+          buttonColor={GlobalStyles.colors.primaryMedium}
+          onPress={newGame}
+        >
+          New Game
+        </Button>
       </View>
-
     </>
   );
 };
