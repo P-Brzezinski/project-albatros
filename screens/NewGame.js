@@ -35,12 +35,10 @@ const NewGame = ({ navigation }) => {
     ]);
   };
 
-  console.log(newGameCtx.timePlayed)
-
   return (
-    <View style={styles.content}>
+    <View>
       {gameEnded && <Text style={styles.gameOverHeader}>Game over!</Text>}
-      <Stopwatch />
+      <Stopwatch stopTimer={gameEnded}/>
       <PlayersQueue />
       {!gameEnded && <Button onPress={confirmGameEnd}>End Game</Button>}
     </View>
@@ -50,9 +48,6 @@ const NewGame = ({ navigation }) => {
 export default NewGame;
 
 const styles = StyleSheet.create({
-  content: {
-    alignItems: "center",
-  },
   gameOverHeader: {
     fontSize: 24,
     fontWeight: "900",

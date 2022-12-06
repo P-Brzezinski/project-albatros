@@ -1,9 +1,10 @@
 import { Pressable, StyleSheet, Text } from "react-native";
-import { GlobalStyles } from '../../constants/styles'
+import { GlobalStyles } from "../../constants/styles";
 
 function Button({ onPress, children }) {
   return (
     <Pressable
+      android_ripple={{ color: GlobalStyles.colors.primaryRipple }}
       style={({ pressed }) => [styles.button, pressed && styles.pressed]}
       onPress={onPress}
     >

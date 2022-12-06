@@ -1,10 +1,11 @@
 import { createContext, useState } from "react";
 
 export const NewGameContext = createContext({
-  gameEnded: "",
+  gameEnded: "", //string only as a placeholder
   timePlayed: "",
   endGame: () => {},
   noticeTime: () => {},
+  newGame: () => {},
 });
 
 const NewGameContextProvider = ({ children }) => {
@@ -19,11 +20,17 @@ const NewGameContextProvider = ({ children }) => {
     setTimePlayed(time);
   };
 
+  const newGame = () => {
+    setGameEnded(false);
+    setTimePlayed("");
+  };
+
   const value = {
     gameEnded: gameEnded,
     timePlayed: timePlayed,
     endGame: endGame,
     noticeTime: noticeTime,
+    newGame: newGame
   };
 
   return (

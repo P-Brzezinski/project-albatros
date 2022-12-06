@@ -24,26 +24,22 @@ const PlayersQueue = () => {
   }
 
   return (
-    <FlatList
-      style={styles.list}
-      data={players}
-      keyExtractor={(item) => item.id}
-      renderItem={({ item, index }) => (
-        <View style={styles.playersQueue}>
-          <PlayerItem playerNumber={index} playerData={item} />
-          <ScoreTile player={item} />
-        </View>
-      )}
-    />
+      <FlatList
+        data={players}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item, index }) => (
+          <View style={styles.playersQueue}>
+              <PlayerItem playerNumber={index} playerData={item} />
+              <ScoreTile player={item} />
+          </View>
+        )}
+      />
   );
 };
 
 export default PlayersQueue;
 
 const styles = StyleSheet.create({
-  list: {
-    margin: 24,
-  },
   fallbackContainer: {
     justifyContent: "center",
     alignItems: "center",
@@ -54,5 +50,5 @@ const styles = StyleSheet.create({
   },
   playersQueue: {
     flexDirection: "row",
-  },
+  }
 });
