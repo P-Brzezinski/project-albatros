@@ -1,15 +1,11 @@
-import { useContext } from "react";
 import { Text, View, StyleSheet, FlatList } from "react-native";
 import { GlobalStyles } from "../../constants/styles";
-import { PLAYERS_DUMMY_DATA } from "../../data/data";
 import { PLAYER_COLORS } from "../../constants/player-colors";
-import { PickedPlayersContext } from "../../store/picked-players-context";
-import PlayerItem from "./PlayerItem";
-import ScoreTile from "../UI/ScoreTile";
+import { List } from "react-native-paper";
+import NumericInput from "react-native-numeric-input";
 
-const PlayersQueue = () => {
-  const ctx = useContext(PickedPlayersContext);
-  const players = ctx.pickedPlayers.map((player, index) => {
+const PlayersQueue = ({ pickedPlayers, gameEnded }) => {
+  const players = pickedPlayers.map((player, index) => {
     return { ...player, color: PLAYER_COLORS[index] };
   });
 
@@ -24,26 +20,40 @@ const PlayersQueue = () => {
   }
 
   return (
-    <FlatList
-      style={styles.list}
-      data={players}
-      keyExtractor={(item) => item.id}
-      renderItem={({ item, index }) => (
-        <View style={styles.playersQueue}>
-          <PlayerItem playerNumber={index} playerData={item} />
-          <ScoreTile player={item} />
-        </View>
-      )}
-    />
+    <View style={styles.container}>
+      <FlatList
+        data={players}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <List.Item
+            key={item.id}
+            title={item.name}
+            right={() => {
+              return !gameEnded ? null : (
+                <NumericInput
+                  value={0}
+                  onChange={() => {}}
+                  totalWidth={128}
+                  totalHeight={40}
+                  step={1}
+                  valueType="real"
+                  rounded
+                  rightButtonBackgroundColor={GlobalStyles.colors.primaryMedium}
+                  leftButtonBackgroundColor={GlobalStyles.colors.primaryLight}
+                />
+              );
+            }}
+            left={() => <List.Icon color={item.color} icon="account" />}
+          />
+        )}
+      />
+    </View>
   );
 };
 
 export default PlayersQueue;
 
 const styles = StyleSheet.create({
-  list: {
-    margin: 24,
-  },
   fallbackContainer: {
     justifyContent: "center",
     alignItems: "center",
@@ -52,7 +62,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: GlobalStyles.colors.primaryMedium,
   },
-  playersQueue: {
-    flexDirection: "row",
+  container: {
+    margin: 24,
   },
 });
