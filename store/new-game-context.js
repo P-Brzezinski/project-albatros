@@ -2,6 +2,7 @@ import { createContext, useState } from "react";
 
 export const NewGameContext = createContext({
   gameEnded: "", //string only as a placeholder
+  gameStartedDate: "", //string only as a placeholder
   timePlayed: "",
   endGame: () => {},
   noticeTime: () => {},
@@ -10,6 +11,7 @@ export const NewGameContext = createContext({
 
 const NewGameContextProvider = ({ children }) => {
   const [gameEnded, setGameEnded] = useState(false);
+  const [gameStartedDate, setGameStartedDate] = useState("");
   const [timePlayed, setTimePlayed] = useState("");
 
   const endGame = () => {
@@ -17,12 +19,13 @@ const NewGameContextProvider = ({ children }) => {
   };
 
   const noticeTime = (time) => {
-    setTimePlayed(time);
+    setTimePlayed(time.h + ":" + time.min + ":" +time.sec);
   };
 
   const newGame = () => {
     setGameEnded(false);
     setTimePlayed("");
+    setGameStartedDate(new Date(Date.now()));
   };
 
   const value = {
@@ -30,7 +33,8 @@ const NewGameContextProvider = ({ children }) => {
     timePlayed: timePlayed,
     endGame: endGame,
     noticeTime: noticeTime,
-    newGame: newGame
+    newGame: newGame,
+    gameStartedDate: gameStartedDate,
   };
 
   return (

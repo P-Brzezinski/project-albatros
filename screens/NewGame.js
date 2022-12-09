@@ -15,26 +15,29 @@ const NewGame = ({ navigation }) => {
     return newGameCtx.gameEnded;
   }, [newGameCtx]);
 
-  const endGame = () => {
-    newGameCtx.endGame();
-  };
-
-  // after score counted, go to EndGame screen
-  const navigateToEndGameScreen = () => {
-    navigation.navigate("EndGame");
-  };
-
-  const confirmGameEnd = () => {
-    Alert.alert("End Game", "Are you sure?", [
+  const confirm = (msg1, msg2, onPress) => {
+    Alert.alert(msg1, msg2, [
       {
         text: "Cancel",
         style: "cancel",
       },
       {
         text: "OK",
-        onPress: endGame,
+        onPress: onPress,
       },
     ]);
+  };
+
+  const navigateToEndGameScreen = () => {
+    navigation.navigate("EndGame");
+  };
+
+  const endGame = () => {
+    confirm("End Game", "Are you sure?", newGameCtx.endGame);
+  };
+
+  const goToEndGameScreen = () => {
+    confirm("Points counted", "Are you sure?", navigateToEndGameScreen);
   };
 
   return (
@@ -43,19 +46,30 @@ const NewGame = ({ navigation }) => {
         {gameEnded && <Text style={styles.gameOverHeader}>Game over!</Text>}
       </View>
       <Stopwatch stopTimer={gameEnded} />
-      <PlayersQueue pickedPlayers={pickedPlayersCtx.pickedPlayers} gameEnded={gameEnded}/>
-      {!gameEnded && (
-        <View style={styles.endGameButtonContainer}>
+      <PlayersQueue
+        pickedPlayers={pickedPlayersCtx.pickedPlayers}
+        gameEnded={gameEnded}
+      />
+      <View style={styles.endGameButtonContainer}>
+        {!gameEnded ? (
           <Button
-            onPress={confirmGameEnd}
+            onPress={endGame}
             icon="stop-circle-outline"
             mode="contained"
             buttonColor={GlobalStyles.colors.primaryMedium}
           >
             End Game
           </Button>
-        </View>
-      )}
+        ) : (
+          <Button
+            onPress={goToEndGameScreen}
+            mode="contained"
+            buttonColor={GlobalStyles.colors.primaryMedium}
+          >
+            Summarize
+          </Button>
+        )}
+      </View>
     </>
   );
 };
