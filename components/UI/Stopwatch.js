@@ -58,7 +58,7 @@ const Stopwatch = ({ stopTimer }) => {
             buttonColor={GlobalStyles.colors.primaryLight}
             style={{borderColor: GlobalStyles.colors.primaryMedium, marginTop: 32}}
           >
-            {!pauseTimer === true ? "Stop" : "Start"}
+            {!pauseTimer === true ? "Pause" : "Start"}
           </Button>
         )}
     </View>
