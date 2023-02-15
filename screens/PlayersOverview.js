@@ -1,14 +1,12 @@
 import { useContext } from "react";
-import { FlatList, View, StyleSheet, Text } from "react-native";
+import { FlatList, View, StyleSheet } from "react-native";
 import { Button } from "react-native-paper";
 import PlayerGridTile from "../components/Player/PlayerGridTile";
 import { GlobalStyles } from "../constants/styles";
 import { PLAYERS_DUMMY_DATA } from "../data/data";
 import { NewGameContext } from "../store/new-game-context";
-import { PickedPlayersContext } from "../store/picked-players-context";
 
 const PlayersScreen = ({ navigation }) => {
-  const pickedPlayersCtx = useContext(PickedPlayersContext);
   const newGameCtx = useContext(NewGameContext);
 
   const renderPlayerItem = (playerData) => {
@@ -16,7 +14,7 @@ const PlayersScreen = ({ navigation }) => {
       navigation.navigate("PlayerDetails", { player: playerData.item });
     };
     const pickPlayer = (player) => {
-      pickedPlayersCtx.pickPlayer(player);
+      newGameCtx.pickPlayer(player);
     };
     return (
       <PlayerGridTile

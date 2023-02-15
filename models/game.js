@@ -1,5 +1,6 @@
 class Game {
-  constructor(dateStarted, dateEnded, timePlayed) {
+  constructor(players, dateStarted, dateEnded, timePlayed) {
+    this.players = players;
     this.dateStarted = dateStarted;
     this.dateEnded = dateEnded;
     this.timePlayed = timePlayed;

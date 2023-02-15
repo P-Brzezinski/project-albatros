@@ -1,14 +1,16 @@
-import { useContext, useMemo } from "react";
+import { useContext, useMemo, useState, useEffect } from "react";
 import { View, StyleSheet, Alert, Text } from "react-native";
 import { Button } from "react-native-paper";
 import PlayersQueue from "../components/Player/PlayersQueue";
-import { PickedPlayersContext } from "../store/picked-players-context";
 import Stopwatch from "../components/UI/Stopwatch";
 import { GlobalStyles } from "../constants/styles";
 import { NewGameContext } from "../store/new-game-context";
+import Game from "../models/game";
+import { saveGame, saveScores } from "../util/database";
 
-const NewGame = ({ navigation }) => {
-  const pickedPlayersCtx = useContext(PickedPlayersContext);
+const NewGame = () => {
+  const [gameSummarized, setGameSummarized] = useState(false);
+  const [gameSaved, setGameSaved] = useState(false);
   const newGameCtx = useContext(NewGameContext);
 
   const gameEnded = useMemo(() => {
@@ -28,16 +30,21 @@ const NewGame = ({ navigation }) => {
     ]);
   };
 
-  const navigateToEndGameScreen = () => {
-    navigation.navigate("EndGame");
-  };
-
   const endGame = () => {
     confirm("End Game", "Are you sure?", newGameCtx.endGame);
   };
 
-  const goToEndGameScreen = () => {
-    confirm("Points counted", "Are you sure?", navigateToEndGameScreen);
+  const save = async () => {
+    const game = new Game(
+      newGameCtx.players,
+      newGameCtx.gameStartedDate.toString(),
+      new Date(Date.now()).toString(),
+      newGameCtx.timePlayed
+    );
+    const savedGame = await saveGame(game);
+    await saveScores(savedGame.insertId, newGameCtx.players).then(
+      setGameSaved((prevState) => !prevState)
+    );
   };
 
   return (
@@ -46,10 +53,7 @@ const NewGame = ({ navigation }) => {
         {gameEnded && <Text style={styles.gameOverHeader}>Game over!</Text>}
       </View>
       <Stopwatch stopTimer={gameEnded} />
-      <PlayersQueue
-        pickedPlayers={pickedPlayersCtx.pickedPlayers}
-        gameEnded={gameEnded}
-      />
+      <PlayersQueue gameEnded={gameEnded} summarize={gameSummarized} />
       <View style={styles.endGameButtonContainer}>
         {!gameEnded ? (
           <Button
@@ -61,13 +65,27 @@ const NewGame = ({ navigation }) => {
             End Game
           </Button>
         ) : (
-          <Button
-            onPress={goToEndGameScreen}
-            mode="contained"
-            buttonColor={GlobalStyles.colors.primaryMedium}
-          >
-            Summarize
-          </Button>
+          <>
+            {!gameSummarized ? (
+              <Button
+                onPress={() => setGameSummarized((prevState) => !prevState)}
+                mode="contained"
+                buttonColor={GlobalStyles.colors.primaryMedium}
+              >
+                Summarize
+              </Button>
+            ) : (
+              <Button
+                onPress={save}
+                disabled={gameSaved}
+                icon="content-save"
+                mode="contained"
+                buttonColor={GlobalStyles.colors.primaryMedium}
+              >
+                {!gameSaved ? "Save Game" : "Saved in DB"}
+              </Button>
+            )}
+          </>
         )}
       </View>
     </>
