@@ -1,4 +1,4 @@
-import { useContext, useMemo, useState, useEffect } from "react";
+import { useContext, useMemo, useState } from "react";
 import { View, StyleSheet, Alert, Text } from "react-native";
 import { Button } from "react-native-paper";
 import PlayersQueue from "../components/Player/PlayersQueue";
