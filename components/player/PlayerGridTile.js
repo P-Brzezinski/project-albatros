@@ -1,43 +1,44 @@
 import { useState } from "react";
-import { Pressable, StyleSheet, Text, View, Platform } from "react-native"
+import { Pressable, StyleSheet, Text, View, Platform } from "react-native";
+import { Button } from "react-native-paper";
 import { GlobalStyles } from "../../constants/styles";
-import PickPlayerButton from "../UI/PickPlayerButton";
 
-const PlayerGridTile = ({player, onPress, onPick}) => {
+const PlayerGridTile = ({ player, onPress, onPick }) => {
   const [picked, setPicked] = useState(false);
 
   const pickHandler = () => {
     setPicked(!picked);
     onPick(player);
-  }
+  };
 
-    return (
-      <View style={styles.gridItem}>
-        <Pressable
-          android_ripple={{ color: GlobalStyles.colors.primaryRipple }}
-          style={({ pressed }) => [
-            styles.button,
-            pressed ? styles.buttonPressed : null,
-          ]}
-          onPress={onPress}
-        >
-          <View style={styles.innerContainer}>
-            <Text style={styles.title}>{player.name}</Text>
-          </View>
-          <View style={styles.innerButtonContainer}>
-            <PickPlayerButton
-              onPress={pickHandler}
-              icon={picked ? "checkmark-circle-outline" : null}
-            >
-              {picked ? "Picked up!" : "Pick up"}
-            </PickPlayerButton>
-          </View>
-        </Pressable>
-      </View>
-    );
-}
+  return (
+    <View style={styles.gridItem}>
+      <Pressable
+        android_ripple={{ color: GlobalStyles.colors.primaryRipple }}
+        style={({ pressed }) => [
+          styles.button,
+          pressed ? styles.buttonPressed : null,
+        ]}
+        onPress={onPress}
+      >
+        <View style={styles.innerContainer}>
+          <Text style={styles.title}>{player.name}</Text>
+        </View>
+        <View style={styles.innerButtonContainer}>
+          <Button
+            onPress={pickHandler}
+            icon={picked ? "check-bold" : null}
+            labelStyle={styles.pickPlayerButton}
+          >
+            {picked ? "Picked up!" : "Pick up"}
+          </Button>
+        </View>
+      </Pressable>
+    </View>
+  );
+};
 
-export default PlayerGridTile
+export default PlayerGridTile;
 
 const styles = StyleSheet.create({
   gridItem: {
@@ -59,6 +60,9 @@ const styles = StyleSheet.create({
   buttonPressed: {
     opacity: 0.5,
   },
+  pickPlayerButton: {
+    color: GlobalStyles.colors.primaryMedium,
+  },
   innerContainer: {
     flex: 1,
     padding: 16,
@@ -69,7 +73,7 @@ const styles = StyleSheet.create({
     backgroundColor: GlobalStyles.colors.primaryLight,
   },
   innerButtonContainer: {
-    backgroundColor: GlobalStyles.colors.primaryLight
+    backgroundColor: GlobalStyles.colors.primaryLight,
   },
   title: {
     fontWeight: "bold",
