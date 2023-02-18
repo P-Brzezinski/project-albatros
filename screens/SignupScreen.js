@@ -11,11 +11,11 @@ const SignupScreen = () => {
 
   const authCtx = useContext(AuthContext);
 
-  const signupHandler = async ({ email, password }) => {
+  const signupHandler = async ({ email, password, nickname }) => {
     setIsAuthenticating(true);
     try {
-      const token = await createUser(email, password);
-      authCtx.authenticate(token);
+      const responseData = await createUser(email, password, nickname);
+      authCtx.authenticate(responseData);
     } catch (error) {
       Alert.alert(
         "Authentication failed!",

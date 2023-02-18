@@ -14,8 +14,8 @@ const LoginScreen = () => {
   const loginHandler = async ({ email, password }) => {
     setIsAuthenticating(true);
     try {
-      const token = await login(email, password);
-      authCtx.authenticate(token);
+      const responseData = await login(email, password);
+      authCtx.authenticate(responseData);
     } catch (error) {
       Alert.alert(
         "Authentication failed!",

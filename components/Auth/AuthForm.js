@@ -6,12 +6,14 @@ import { GlobalStyles } from "../../constants/styles";
 import Input from "./Input";
 
 const AuthForm = ({ isLogin, onSubmit, credentialsInvalid }) => {
+  const [enteredNickname, setEnteredNickname] = useState("");
   const [enteredEmail, setEnteredEmail] = useState("");
   const [enteredConfirmEmail, setEnteredConfirmEmail] = useState("");
   const [enteredPassword, setEnteredPassword] = useState("");
   const [enteredConfirmPassword, setEnteredConfirmPassword] = useState("");
 
   const {
+    nickname: nicknameInvalid,
     email: emailIsInvalid,
     confirmEmail: emailsDontMatch,
     password: passwordIsInvalid,
@@ -20,6 +22,9 @@ const AuthForm = ({ isLogin, onSubmit, credentialsInvalid }) => {
 
   function updateInputValueHandler(inputType, enteredValue) {
     switch (inputType) {
+      case "nickname":
+        setEnteredNickname(enteredValue);
+        break;
       case "email":
         setEnteredEmail(enteredValue);
         break;
@@ -37,6 +42,7 @@ const AuthForm = ({ isLogin, onSubmit, credentialsInvalid }) => {
 
   function submitHandler() {
     onSubmit({
+      nickname: enteredNickname,
       email: enteredEmail,
       confirmEmail: enteredConfirmEmail,
       password: enteredPassword,
@@ -47,6 +53,15 @@ const AuthForm = ({ isLogin, onSubmit, credentialsInvalid }) => {
   return (
     <View style={styles.form}>
       <View>
+        {!isLogin && (
+          <Input
+            label="Nickname"
+            onUpdateValue={updateInputValueHandler.bind(this, "nickname")}
+            value={enteredNickname}
+            keyboardType="text"
+            isInvalid={nicknameInvalid}
+          />
+        )}
         <Input
           label="Email Address"
           onUpdateValue={updateInputValueHandler.bind(this, "email")}

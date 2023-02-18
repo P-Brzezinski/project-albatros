@@ -7,7 +7,9 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import { IconButton } from "react-native-paper";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
+import LoadingOverlay from "./components/UI/LoadingOverlay";
 import LoginScreen from "./screens/LoginScreen";
 import SignupScreen from "./screens/SignupScreen";
 import PlayersOverview from "./screens/PlayersOverview";
@@ -19,7 +21,6 @@ import AddPlayer from "./screens/AddPlayer";
 import NewGameContextProvider from "./store/new-game-context";
 import { init } from "./util/database";
 import AuthContextProvider, { AuthContext } from "./store/auth-context";
-import LoadingOverlay from "./components/UI/LoadingOverlay";
 
 const Stack = createNativeStackNavigator();
 const BottomTabs = createBottomTabNavigator();
@@ -34,19 +35,18 @@ function AuthStack() {
 }
 
 function ManageGames() {
+  const authCtx = useContext(AuthContext);
   return (
     <BottomTabs.Navigator
-      screenOptions={({ navigation }) => ({
+      screenOptions={() => ({
         headerStyle: { backgroundColor: GlobalStyles.colors.primaryMedium },
         headerTintColor: GlobalStyles.colors.primaryWhite,
         tabBarStyle: { backgroundColor: GlobalStyles.colors.primaryMedium },
         tabBarActiveTintColor: GlobalStyles.colors.primaryLight,
         headerRight: ({ tintColor }) => (
           <IconButton
-            onPress={() => {
-              navigation.navigate("AddPlayer");
-            }}
-            icon="account-plus"
+            onPress={authCtx.logout}
+            icon="logout"
             iconColor={tintColor}
           />
         ),
@@ -137,6 +137,37 @@ const Navigation = () => {
   );
 };
 
+const Root = () => {
+  const [isTryingLogin, setIsTryingLogin] = useState(true);
+  const authCtx = useContext(AuthContext);
+
+  useEffect(() => {
+    const fetchToken = async () => {
+      const storedId = await AsyncStorage.getItem("id");
+      const storedNickname = await AsyncStorage.getItem("nickname");
+      const storedToken = await AsyncStorage.getItem("token");
+
+      if (storedId && storedNickname && storedToken) {
+        authCtx.authenticate({
+          id: storedId,
+          nickname: storedNickname,
+          token: storedToken,
+        });
+      }
+
+      setIsTryingLogin(false);
+    };
+
+    fetchToken();
+  }, []);
+
+  if (isTryingLogin) {
+    return <LoadingOverlay message="App is loading..." />;
+  }
+
+  return <Navigation />;
+};
+
 export default function App() {
   const [dbInitialized, setDbInitialized] = useState(false);
 
@@ -158,7 +189,7 @@ export default function App() {
     <>
       <StatusBar style="dark" />
       <AuthContextProvider>
-        <Navigation />
+        <Root />
       </AuthContextProvider>
     </>
   );
