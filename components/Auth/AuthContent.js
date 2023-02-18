@@ -10,6 +10,7 @@ const AuthContent = ({ isLogin, onAuthenticate }) => {
   const navigation = useNavigation();
 
   const [credentialsInvalid, setCredentialsInvalid] = useState({
+    nickname: false,
     email: false,
     password: false,
     confirmEmail: false,
@@ -25,11 +26,14 @@ const AuthContent = ({ isLogin, onAuthenticate }) => {
   };
 
   const submitHandler = (credentials) => {
-    let { email, confirmEmail, password, confirmPassword } = credentials;
+    let { nickname, email, confirmEmail, password, confirmPassword } =
+      credentials;
 
+    nickname = nickname.trim();
     email = email.trim();
     password = password.trim();
 
+    const nicknameValid = nickname.length >= 3;
     const emailIsValid = email.includes("@");
     const passwordIsValid = password.length > 6;
     const emailsAreEqual = email === confirmEmail;
@@ -38,10 +42,11 @@ const AuthContent = ({ isLogin, onAuthenticate }) => {
     if (
       !emailIsValid ||
       !passwordIsValid ||
-      (!isLogin && (!emailsAreEqual || !passwordsAreEqual))
+      (!isLogin && (!nicknameValid || !emailsAreEqual || !passwordsAreEqual))
     ) {
       Alert.alert("Invalid input", "Please check your entered credentials.");
       setCredentialsInvalid({
+        nickname: !nicknameValid,
         email: !emailIsValid,
         confirmEmail: !emailIsValid || !emailsAreEqual,
         password: !passwordIsValid,
@@ -49,7 +54,7 @@ const AuthContent = ({ isLogin, onAuthenticate }) => {
       });
       return;
     }
-    onAuthenticate({ email, password });
+    onAuthenticate({ email, password, nickname });
   };
 
   return (

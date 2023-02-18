@@ -3,11 +3,13 @@ import { FlatList, View, StyleSheet } from "react-native";
 import { Button } from "react-native-paper";
 import PlayerGridTile from "../components/Player/PlayerGridTile";
 import { GlobalStyles } from "../constants/styles";
-import { PLAYERS_DUMMY_DATA } from "../data/data";
+import { AuthContext } from "../store/auth-context";
 import { NewGameContext } from "../store/new-game-context";
+import Player from "../models/player";
 
 const PlayersScreen = ({ navigation }) => {
   const newGameCtx = useContext(NewGameContext);
+  const authCtx = useContext(AuthContext);
 
   const renderPlayerItem = (playerData) => {
     const pressPlayerItem = () => {
@@ -33,7 +35,7 @@ const PlayersScreen = ({ navigation }) => {
   return (
     <>
       <FlatList
-        data={PLAYERS_DUMMY_DATA}
+        data={[new Player(authCtx.id, authCtx.nickname)]}
         keyExtractor={(item) => item.id}
         renderItem={renderPlayerItem}
         numColumns={2}
