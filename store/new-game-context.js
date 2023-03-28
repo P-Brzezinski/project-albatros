@@ -19,15 +19,8 @@ const NewGameContextProvider = ({ children }) => {
   const [timePlayed, setTimePlayed] = useState("");
 
   const pickPlayer = (pickedPlayer) => {
-    if (players.find(player => player.id === pickedPlayer.id)) {
-      const filteredPlayers = players.filter(
-        (player) => player.id !== pickedPlayer.id
-      );
-      setPlayers(filteredPlayers);
-    } else {
-      const newPlayers = players.concat(pickedPlayer);
-      setPlayers(newPlayers);
-    }
+    const newPlayers = players.concat(pickedPlayer);
+    setPlayers(newPlayers);
   };
 
   const countScore = (playerId, scoreValue) => {

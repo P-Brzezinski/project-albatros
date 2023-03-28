@@ -2,23 +2,25 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createContext, useState } from "react";
 
 export const AuthContext = createContext({
-  id: "",
-  nickname: "",
-  token: "",
+  firstPlayer: {
+    id: "",
+    nickname: "",
+    token: "",
+  },
   isAuthenticated: false,
   authenticate: (authData) => {},
   logout: () => {},
 });
 
 const AuthContextProvider = ({ children }) => {
-  const [id, setId] = useState();
-  const [authNickname, setAuthNickname] = useState();
-  const [authToken, setAuthToken] = useState();
+  const [firstPlayer, setFirstPlayer] = useState({});
 
   const authenticate = ({ id, nickname, token }) => {
-    setId(id);
-    setAuthNickname(nickname);
-    setAuthToken(token);
+    setFirstPlayer({
+      id,
+      nickname,
+      token,
+    });
 
     AsyncStorage.setItem("id", id);
     AsyncStorage.setItem("nickname", nickname);
@@ -26,9 +28,7 @@ const AuthContextProvider = ({ children }) => {
   };
 
   const logout = () => {
-    setId(null);
-    setAuthNickname(null);
-    setAuthToken(null);
+    setFirstPlayer({});
 
     AsyncStorage.removeItem("id");
     AsyncStorage.removeItem("nickname");
@@ -36,10 +36,8 @@ const AuthContextProvider = ({ children }) => {
   };
 
   const value = {
-    id: id,
-    nickname: authNickname,
-    token: authToken,
-    isAuthenticated: !!authToken,
+    firstPlayer,
+    isAuthenticated: !!firstPlayer.token,
     authenticate,
     logout,
   };
