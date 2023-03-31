@@ -29,7 +29,7 @@ const LoginScreen = () => {
     return <LoadingOverlay message="Logging you in..." />;
   }
 
-  return <AuthContent isLogin onAuthenticate={loginHandler} />;
+  return <AuthContent isLogin onAuthenticate={loginHandler} cardStyles={{marginTop: 128}}/>;
 };
 
 export default LoginScreen;

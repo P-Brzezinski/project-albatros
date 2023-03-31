@@ -6,7 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 import AuthForm from "./AuthForm";
 import { GlobalStyles } from "../../constants/styles";
 
-const AuthContent = ({ isLogin, onAuthenticate }) => {
+const AuthContent = ({ isLogin, onAuthenticate, cardStyles }) => {
   const navigation = useNavigation();
 
   const [credentialsInvalid, setCredentialsInvalid] = useState({
@@ -58,7 +58,7 @@ const AuthContent = ({ isLogin, onAuthenticate }) => {
   };
 
   return (
-    <Card style={styles.authContent}>
+    <Card style={[styles.authContent, cardStyles]}>
       <AuthForm
         isLogin={isLogin}
         onSubmit={submitHandler}
@@ -80,7 +80,6 @@ export default AuthContent;
 
 const styles = StyleSheet.create({
   authContent: {
-    marginTop: 128,
     marginHorizontal: 32,
     padding: 16,
     backgroundColor: GlobalStyles.colors.primaryLight,
