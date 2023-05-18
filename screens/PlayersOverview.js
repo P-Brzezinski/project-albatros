@@ -20,8 +20,8 @@ const PlayersOverview = ({ navigation }) => {
   const hideModal = () => setShowLoginModal(false);
 
   useEffect(() => {
-    if (authCtx.firstPlayer != null) {
-      var firstPlayer = new Player(
+    if (authCtx.isAuthenticated) {
+      const firstPlayer = new Player(
         authCtx.firstPlayer.id,
         authCtx.firstPlayer.nickname
       );
@@ -49,8 +49,6 @@ const PlayersOverview = ({ navigation }) => {
   if (isLoading) {
     return <LoadingOverlay message="Loading players..." />;
   }
-
-  console.log("OVERVIEW", newGameCtx.players);
 
   return (
     <>

@@ -19,8 +19,8 @@ const NewGameContextProvider = ({ children }) => {
   const [timePlayed, setTimePlayed] = useState("");
 
   const pickPlayer = (pickedPlayer) => {
-    const newPlayers = players.concat(pickedPlayer);
-    setPlayers(newPlayers);
+      const newPlayers = players.concat(pickedPlayer);
+      setPlayers(newPlayers);
   };
 
   const countScore = (playerId, scoreValue) => {

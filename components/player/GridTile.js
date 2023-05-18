@@ -1,25 +1,18 @@
 import { StyleSheet } from "react-native";
-import { Button, Card } from "react-native-paper";
-import { GlobalStyles } from "../../constants/styles";
+import { Card, Button } from "react-native-paper";
 
-const GridTile = ({ label, icon, onPress }) => {
+const PlayerGridTile = ({ label, icon, onPress }) => {
   return (
-    <Card style={styles.gridItem}>
-      <Button icon={icon} onPress={onPress}>
-        {label}
-      </Button>
+    <Card style={styles.gridStyle}>
+      <Button onPress={onPress} icon={icon}>{label}</Button>
     </Card>
   );
 };
 
-export default GridTile;
+export default PlayerGridTile;
 
 const styles = StyleSheet.create({
-  gridItem: {
-    // flex: 1,
-    margin: 5,
-    backgroundColor: GlobalStyles.colors.primaryWhite,
-    // height: 100,
-    // width: 200
-  },
+  gridStyle: {
+    margin: 8
+  }
 });
