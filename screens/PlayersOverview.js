@@ -20,10 +20,10 @@ const PlayersOverview = ({ navigation }) => {
   const hideModal = () => setShowLoginModal(false);
 
   useEffect(() => {
-    if (authCtx.nickname != null) {
+    if (authCtx.isAuthenticated) {
       const firstPlayer = new Player(
-        authCtx.id,
-        authCtx.nickname
+        authCtx.firstPlayer.id,
+        authCtx.firstPlayer.nickname
       );
       newGameCtx.pickPlayer(firstPlayer);
     }
